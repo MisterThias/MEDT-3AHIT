@@ -23,7 +23,7 @@
 		</div>";		}
 
 	?>
-		<form class="form-inline" action="http://localhost/UE4/formhuebootstrapwithphp.php">
+		<form class="form-inline" action="http://localhost/UE4/SimpleForm.php">
   			<div class="form-group col-lg-12 col-xs-12">
     			<input type="text" class="form-control" id="InputFirstName" placeholder="Your first name" name="vn" style="width:100%;">
   			</div>
