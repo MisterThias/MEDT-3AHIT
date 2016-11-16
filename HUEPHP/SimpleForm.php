@@ -85,7 +85,7 @@
 		<?php 
 
 		if(isset($_GET['submitter'])){
-			echo "<div class=\"container animated fadeInUp col-xs-12\"><h1 style=\"color:#b30000;\">".$_GET['vn']."<small> ".$_GET['nn']."</small></h1><p>Your email address is: <span style=\"color:#b30000;\">".$_GET['em']."</span>";}
+			echo "<div class=\"jumbotron animated fadeInUp col-xs-12\"><h1 style=\"color:#b30000;\">".$_GET['vn']."<small> ".$_GET['nn']."</small></h1><p>Your email address is: <span style=\"color:#b30000;\">".$_GET['em']."</span>";}
 			
 
 		?></div>
