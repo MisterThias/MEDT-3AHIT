@@ -51,7 +51,7 @@
 				</tr>
 				<tr>
 				  <td><p class="text-center">Server-Info</p></td>
-				  <td><p class="text-center"><?php echo $_SERVER['SERVER_SIGNATURE']; ?></p></td>
+				  <td><p class="text-center"><?php echo $_SERVER['SERVER_SOFTWARE']; ?></p></td>
 				</tr>
 			</tbody>
 				
