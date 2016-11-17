@@ -73,7 +73,7 @@
   			</div>
   			<div class="form-group col-lg-12 col-xs-12">
     			<label>Email address</label>
-    			<input type="text" class="form-control" id="InputEmail" placeholder="Your email address" name="em" style="width:100%;">
+    			<input type="email" class="form-control" id="InputEmail" placeholder="Your email address" name="em" style="width:100%;">
   			</div>
   			
   			<div class="text-center col-lg-12 col-xs-12" style="padding-top: 15px;">
