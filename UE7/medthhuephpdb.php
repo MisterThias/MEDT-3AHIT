@@ -23,6 +23,10 @@ color:black;
 }
 </style>
 <body>
+<div class="container">
+<div class="page-header">
+            <h1>Trackstar Light</h1>
+ </div>
 <?php
 //DB Settings 
 $host='localhost';
@@ -41,28 +45,40 @@ if(isset($_GET['deleteID'])){
 	$var=$_GET['deleteID'];
 	$res=$db->query("DELETE FROM project WHERE id=$var" );
 
+	$feedbackclass="bg-danger";
+	$feedbackdelete="nicht";
+
+	if($res->rowCount()){
+
+		$feedbackclass="bg-success";
+		$feedbackdelete="";
+	}
+echo "<p class=\"".$feedbackclass."\">Das Projekt wurde $feedbackdelete gelöscht!</p>";
 }
 
 if (isset($_GET['editformID'])) {
 		$editid = $_GET['editformID'];
-		$sql=$db->prepare("SELECT name, description, createDate, id FROM project WHERE id = $editid");
-		$sql->execute();
+		$sql=$db->query("SELECT name, description, createDate, id FROM project WHERE id = $editid");
 		$selectedproject=$sql->fetch(\PDO::FETCH_ASSOC);
 	}
 
 
 	if (isset($_GET['submitbtn'])) {
-
 		$projectid=$_GET['id'];
-
-		$sql = "UPDATE project SET name=:name, description=:description, createDate=:createDate WHERE id=$projectid";
-			$stmt = $db->prepare($sql);
-				$stmt->bindParam(':name', $_GET['name'], PDO::PARAM_STR); 
-				$stmt->bindParam(':description', $_GET['description'], PDO::PARAM_STR);
-				$stmt->bindParam(':createDate', $_GET['createDate'], PDO::PARAM_STR);
-			$stmt->execute();
-		header("Location:".$_SERVER['PHP_SELF']);   
+		$projectname=$_GET['name'];
+		$projectdescription=$_GET['description'];
+		$projectcreateDate=$_GET['createDate'];
+		$sql=$db->query("UPDATE project SET name='".$projectname."', description='".$projectdescription."', createDate='".$projectcreateDate."' WHERE id=$projectid"); 
+			
+		header("Location:".$_SERVER['PHP_SELF']."?editsucc=true");   
 	}
+
+    if(isset($_GET['submitbtnnew'])){
+        $projectdesc=$_GET['description'];
+        $projectname=$_GET['name'];
+
+        $db->query("INSERT INTO project (name, description, createDate) VALUES('$projectname', '$projectdesc', now())");
+    }
 
 	if (isset($_GET['closebtn'])) {
 		header("Location:".$_SERVER['PHP_SELF']); 
@@ -73,7 +89,10 @@ $res=$db->query("SELECT * FROM project");
 //array
 $tmp=$res->fetchAll(PDO::FETCH_OBJ);
 ?>
-<div class="container">
+
+
+
+
 <table class="table table-hover table-bordered table-responsive table-inverse">
 <thead><tr><th>Name</th>
 <th>Description</th>
@@ -81,7 +100,7 @@ $tmp=$res->fetchAll(PDO::FETCH_OBJ);
 <th>Operationen</th></tr></thead>
 <?php foreach($tmp as $row) :?>
 <tr>
-<td><?php echo $row->name;?></td>
+<td><?php echo htmlspecialchars($row->name);?></td>
 <td><?php echo $row->description;?></td>
 <td><?php echo $row->createDate;?></td>
 <td>
@@ -93,7 +112,10 @@ $tmp=$res->fetchAll(PDO::FETCH_OBJ);
 <?php endforeach; ?>
 
 </table>
-
+<a href=<?php echo "medthhuephpdb.php?insertModal=1&modal=open"?> style="color:white;"><button class="btn btn-success">New Project</button></a>
+<?php 
+if(isset($_GET['editformID'])){
+?>
 <div id="myModal" class="modal fade myModal" role="dialog">
   <div class="modal-dialog">
 
@@ -104,11 +126,11 @@ $tmp=$res->fetchAll(PDO::FETCH_OBJ);
         	<button type="submit" class="close" name="closebtn" value="close">&times;</button>
         </form>
         <h4 class="modal-title">
-        	Projekt 
+        	
         	<?php  
-        		print_r($selectedproject['name']);
+        		print_r ("Projekt ".$selectedproject['name']." bearbeiten");
         	?>
-        	bearbeiten
+        	
         </h4>
       </div>
       <div class="modal-body">
@@ -138,12 +160,53 @@ $tmp=$res->fetchAll(PDO::FETCH_OBJ);
       </div>
   </div>
 </div>
+<?php }
+if(isset($_GET['insertModal'])){
+?>
+<div id="myModal" class="modal fade myModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <form>
+            <button type="submit" class="close" name="closebtn" value="close">&times;</button>
+        </form>
+        <h4 class="modal-title">
+            
+            <?php  
+                print_r ("Neues Projekt");
+            ?>
+            
+        </h4>
+      </div>
+      <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <label class="control-label">Name</label>
+                <input type="text" class="form-control" name="name" placeholder="Project name" required>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Beschreibung</label>
+                <input type="text" class="form-control" name="description"  placeholder="Project description" required>
+            </div>
+            
+            <div style="float:right;">
+            <button type="submit" class="btn btn-default" name="submitbtnnew" value="confirm">Projekt anlegen</button>
+            <button type="submit" class="btn btn-default" name="closebtn" value="close">Abbrechen</button>
+            </div>
+            <div style="clear:both;"></div>
+        </form>
+      </div>
+  </div>
+</div>
 
 <?php  
-
+}
 if (isset($_GET['modal'])) {
 	echo "<script>$(\"#myModal\").modal('show')</script>";
 }
+
 
 ?>
 
