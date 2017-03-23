@@ -78,6 +78,7 @@ endforeach;
 ?>
 
 </table>
+
 <?php
 $res=$db->query ("SELECT * FROM customers");
 $tmp = $res->fetchAll(PDO::FETCH_ASSOC);
@@ -86,25 +87,26 @@ $countelements = count($tmp);
 $maxpages=round($countelements/20);
 $nextpage=$offsetGet+1;
 $lastpage=$offsetGet-1;
-
-echo "<a href=\"paginationtestexample.php?offsetter=0\"><span class=\"glyphicon glyphicon-backward\"></span></a>";
+echo "<nav class=\"...\">";
+echo "<ul class=\"pagination\">";
+echo "<li><span class=\"glyphicon glyphicon-backward\"><a href=\"paginationtestexample.php?offsetter=0\"></a></span></li>";
 if($offsetGet>0){
-echo "<a href=\"paginationtestexample.php?offsetter=$lastpage\"><span class=\"glyphicon glyphicon-menu-left\"></span></a>";
+echo "<li><span class=\"glyphicon glyphicon-menu-left\"><a href=\"paginationtestexample.php?offsetter=$lastpage\"></a></span></li>";
 }
 
 for($i=0;$i<=$maxpages;$i++){
 	if($i==$offsetGet-1 || $i==$offsetGet+1 || $i==$offsetGet){
 	$realNumber=$i+1;
-	echo "<a href=\"paginationtestexample.php?offsetter=$i\">$realNumber</a>";
+	echo "<li><a href=\"paginationtestexample.php?offsetter=$i\">$realNumber</a></li>";
 	}
 }
 if($offsetGet<$maxpages){
-	echo "<a href=\"paginationtestexample.php?offsetter=$nextpage\"><span class=\"glyphicon glyphicon-menu-right\"></span></a>";
+	echo "<li><span class=\"glyphicon glyphicon-menu-right\"><a href=\"paginationtestexample.php?offsetter=$nextpage\"></a></span></li>";
 }
 
-echo "<a href=\"paginationtestexample.php?offsetter=6\"><span class=\"glyphicon glyphicon-forward\"></span></a>";
-
-
+echo "<li><span class=\"glyphicon glyphicon-forward\"><a href=\"paginationtestexample.php?offsetter=6\"></a></span></li>";
+echo "</ul>";
+echo "</nav>";
 ?>
 </div>
 	</body>
